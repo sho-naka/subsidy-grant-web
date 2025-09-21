@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>補助金・助成金サーチ（MVP）</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Hero -->
+  <header>
+    <div class="brand">
+      <div class="brand-left">
+        <div class="logo">SG</div>
+        <div class="brand-name">Subsidy Grant Finder</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <span class="chip">全国47都道府県に対応</span>
+    <h1><span class="grad">使える補助金・助成金を最短で検索</span></h1>
+    <p>地域・業種・キーワードを入れて「検索する」を押すだけ。</p>
+  </section>
+
+  <main>
+    <!-- 入力フォーム（見た目だけ強化） -->
+    <div class="card panel-accent">
+      <header><h2>検索条件</h2></header>
+      <form id="form" style="padding-top:0">
+        <div class="row" style="padding:16px">
+          <div>
+            <label>都道府県 <span class="hint">選択してください</span></label>
+            <select id="pref">
+              <!-- prefectures.js により動的に生成 -->
+            </select>
+          </div>
+          <div>
+            <label>市区町村 <span class="hint">例：渋谷区</span></label>
+            <input id="muni" type="text" placeholder="渋谷区" />
+          </div>
+        </div>
+
+        <div class="row" style="padding:0 16px 16px">
+          <div>
+            <label>業種 <span class="hint">選択してください</span></label>
+            <select id="industry">
+              <!-- industries.js により動的に生成 -->
+            </select>
+          </div>
+          <div>
+            <label>キーワード（任意）</label>
+            <input id="kw" type="text" placeholder="生成AI 導入 など" />
+          </div>
+        </div>
+
+        <div class="row" style="padding:0 16px 16px; grid-template-columns:120px auto">
+          <div>
+            <label>件数</label>
+            <select id="topk">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <div class="actions" style="align-items:end; justify-content:flex-end">
+            <button id="runBtn" type="button" class="btn-primary">検索する</button>
+            <button id="clearBtn" type="button" class="btn-ghost">クリア</button>
+          </div>
+        </div>
+
+        <div id="status" class="hint" style="padding:0 16px 16px"></div>
+      </form>
+    </div>
+
+    <!-- 結果 -->
+    <div class="card" style="margin-top:12px">
+      <header><h2>検索結果</h2></header>
+      <div id="results" class="results" style="padding:0 16px 12px"></div>
+      <div class="foot"><span class="muted">出典は必ず公式サイトを確認してください。</span></div>
+    </div>
+  </main>
+
+  <script src="prefectures.js"></script>
+  <script src="industries.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
