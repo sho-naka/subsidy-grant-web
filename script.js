@@ -53,12 +53,16 @@ function render(items = [], took_ms = 0) {
 
     const reasons = (it.reasons || []).slice(0, 3).map(r => `<span class="pill">${escapeHtml(r)}</span>`).join(" ");
 
+    // grant_typeに応じてバッジの表示を決定
+    const grantType = it.grant_type || "補助金"; // デフォルトは補助金
+    const badgeClass = grantType === "助成金" ? "grant" : "subsidy";
+
     const card = document.createElement("div");
     card.className = "card-modern";
     card.innerHTML = `
       <div class="card-head">
         <div>
-          <div class="kind-badge subsidy">Subsidy</div>
+          <div class="kind-badge ${badgeClass}">${escapeHtml(grantType)}</div>
           <h3 style="margin:6px 0 6px">${escapeHtml(it.title || "（タイトル不明）")}</h3>
           <div class="meta">${meta.join(" ・ ")}</div>
         </div>
