@@ -6,11 +6,12 @@ const _DEFAULT_API = "https://subsidy-grant-api.vercel.app/v1/search";
 let API_ENDPOINT = _DEFAULT_API;
 try {
   const host = window.location.hostname;
+  // 開発時のみローカルAPIを使う（localhost/127.0.0.1）
   if (host === "localhost" || host === "127.0.0.1") {
     API_ENDPOINT = "http://127.0.0.1:8000/v1/search";
-  } else if (window.location.origin && window.location.origin !== "null") {
-    // 同一オリジンで配備されている場合は相対パスを使う
-    API_ENDPOINT = `${window.location.origin}/v1/search`;
+  } else {
+    // それ以外の公開環境（GitHub Pages 等）では必ず公開APIを使う
+    API_ENDPOINT = _DEFAULT_API;
   }
 } catch (e) {
   API_ENDPOINT = _DEFAULT_API;
