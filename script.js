@@ -2,8 +2,19 @@
  * 補助金・助成金検索アプリケーション
  */
 
-// API設定
-const API_ENDPOINT = "https://subsidy-grant-api.vercel.app/v1/search"; // 必要なら差し替え
+const _DEFAULT_API = "https://subsidy-grant-api.vercel.app/v1/search";
+let API_ENDPOINT = _DEFAULT_API;
+try {
+  const host = window.location.hostname;
+  if (host === "localhost" || host === "127.0.0.1") {
+    API_ENDPOINT = "http://127.0.0.1:8000/v1/search";
+  } else if (window.location.origin && window.location.origin !== "null") {
+    // 同一オリジンで配備されている場合は相対パスを使う
+    API_ENDPOINT = `${window.location.origin}/v1/search`;
+  }
+} catch (e) {
+  API_ENDPOINT = _DEFAULT_API;
+}
 
 // DOM要素取得用のユーティリティ関数
 const $ = (id) => document.getElementById(id);
@@ -66,12 +77,12 @@ function render(items = [], took_ms = 0) {
           <h3 style="margin:6px 0 6px">${escapeHtml(it.title || "（タイトル不明）")}</h3>
           <div class="meta">${meta.join(" ・ ")}</div>
         </div>
-        <div class="score">信頼度 <span class="score">${(it.confidence ?? 0).toFixed(2)}</span></div>
+  <div class="score">AIスコア（信頼度）: <span class="score">${Math.round((it.confidence ?? 0) * 100)}%</span></div>
       </div>
       <div class="body" style="margin:10px 0 8px">${escapeHtml(it.summary || "")}</div>
       <div class="card-footer">
         <a class="btn" href="${it.source_url}" target="_blank" rel="noopener">公式ページ</a>
-        <span class="pill">${reasons || "—"}</span>
+  ${reasons || "—"}
       </div>
     `;
     resultsEl.appendChild(card);
